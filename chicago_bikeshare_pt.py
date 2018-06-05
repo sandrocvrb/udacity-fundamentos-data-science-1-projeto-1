@@ -259,7 +259,8 @@ def calculate_min(values):
         Número
     """
 
-    n = len(values)
+    n = calculate_len(values)
+
     if n < 1:
         return None
     else:
@@ -280,7 +281,8 @@ def calculate_max(values):
         Número
     """
 
-    n = len(values)
+    n = calculate_len(values)
+
     if n < 1:
         return None
     else:
@@ -301,7 +303,7 @@ def calculate_mean(values):
         Número
     """
 
-    return sum(values) / len(values)
+    return calculate_sum(values) / calculate_len(values)
 
 
 def calculate_median(values):
@@ -314,13 +316,80 @@ def calculate_median(values):
         Número
     """
 
-    n = len(values)
+    n = calculate_len(values)
+
     if n < 1:
         return None
     if n % 2 == 1:
-        return sorted(values)[n//2]
+        return calculate_sorted(values)[n//2]
     else:
-        return sum(sorted(values)[n//2-1:n//2+1])/2.0
+        return calculate_sum(calculate_sorted(values)[n//2-1:n//2+1])/2
+
+
+def calculate_sum(values):
+    """Calcula a soma entre os valores de uma lista.
+
+    Arguments:
+        values {list} -- Lista com números
+
+    Returns:
+        Número
+    """
+
+    result = 0.
+
+    for v in values:
+        result += v
+
+    return result
+
+
+def calculate_len(values):
+    """Calcula a quantidade de itens de uma lista.
+
+    Arguments:
+        values {list} -- Lista com números
+
+    Returns:
+        Número
+    """
+
+    result = 0
+
+    for v in values:
+        result += 1
+
+    return result
+
+
+def calculate_sorted(values):
+    """Reordena os itens de uma lista.
+
+    Arguments:
+        values {list} -- Lista com números
+
+    Returns:
+        Lista reordenada
+    """
+    less = []
+    pivotList = []
+    more = []
+
+    if len(values) <= 1:
+        return values
+    else:
+        pivot = values[0]
+        for i in values:
+            if i < pivot:
+                less.append(i)
+            elif i > pivot:
+                more.append(i)
+            else:
+                pivotList.append(i)
+        less = calculate_sorted(less)
+        more = calculate_sorted(more)
+
+        return less + pivotList + more
 
 
 trip_duration_list = [int(duration) for duration in column_to_list(data_list, 2)]
